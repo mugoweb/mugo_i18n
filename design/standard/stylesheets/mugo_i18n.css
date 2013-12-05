@@ -1,0 +1,29 @@
+#mugo_i18n ul
+{
+	margin: 0px;
+}
+
+#mugo_i18n li
+{
+	margin: 0px;
+	list-style: none;
+	background-color: lightblue;
+	padding: 5px 10px;
+	margin-bottom: 2px;
+}
+
+#mugo_i18n li.finished
+{
+	background-color: lightgreen;
+}
+
+#mugo_i18n label
+{
+	font-weight: normal;
+	white-space: normal;
+}
+
+#mugo_i18n input
+{
+	width: 600px;
+}
