@@ -11,9 +11,10 @@ How to use this extension:
 example strucutre
 
 myextension
-   translations
-      ger-DE
-      fre-FR
+myextension/translations
+myextension/translations/ger-DE
+myextension/translations/fre-FR
+
 
 3) Use following script to extract all translation strings from 'myextension':
 
