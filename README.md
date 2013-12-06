@@ -10,10 +10,10 @@ How to use this extension:
 2) In your extension, create a translation folder and subfolders for each translation you would like to create. Here an
 example strucutre
 
-myextension
-myextension/translations
-myextension/translations/ger-DE
-myextension/translations/fre-FR
+* myextension
+    * translations
+        * ger-DE
+        * fre-FR
 
 
 3) Use following script to extract all translation strings from 'myextension':
