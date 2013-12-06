@@ -4,7 +4,7 @@ $module = $Params[ 'Module' ];
 
 if( !empty( $_REQUEST[ 'ids' ] ) && $_REQUEST[ 'locale' ] )
 {
-	// PEK: security risk here
+	// PEK: security risk here - user a preg_replace to only allow a-z01\-
 	$file = 'extension/mugo_i18n/translations/'. $_REQUEST[ 'locale' ] .'/translation.ts';
 
 	if( file_exists( $file ) )
@@ -26,6 +26,8 @@ if( !empty( $_REQUEST[ 'ids' ] ) && $_REQUEST[ 'locale' ] )
 				$translationTag = $result->item(0);
 				$translationTag->setAttribute( 'type', 'finished' );
 				$translationTag->nodeValue = $_REQUEST[ 'values' ][ $index ];
+				
+				var_dump( $_REQUEST[ 'values' ][ $index ] );
 			}
 		}
 

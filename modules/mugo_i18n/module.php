@@ -6,15 +6,16 @@ $Module = array( 'name' => 'Main module',
 $ViewList = array();
 
 $ViewList[ 'main' ] = array(
-	'params'     => array( 'locale' ),
+	'params'     => array( 'extension', 'locale' ),
 	'functions'  => array( 'editor' ),
 	'script'     => 'main.php',
-	'ui_context' => 'administration'
+	'ui_context' => 'administration',
+	'default_navigation_part' => 'ezsetupnavigationpart',
 );
 
 $ViewList[ 'save' ] = array(
-	'functions' => array( 'editor' ),
-	'script' => 'save.php',
+	'functions'  => array( 'editor' ),
+	'script'     => 'save.php',
 	'ui_context' => 'administration'
 );
 

@@ -23,7 +23,17 @@
 	white-space: normal;
 }
 
-#mugo_i18n input
+#mugo_i18n .controlbar label
+{
+	display: inline;
+}
+
+#mugo_i18n .content
+{
+	margin-top: 20px;
+}
+
+#mugo_i18n .content input
 {
 	width: 600px;
 }

@@ -4,7 +4,8 @@
 	var pluginName = 'mugo_i18n',
 	    pluginElement = null,
 		defaults = {
-			save_service_url : ''
+			save_service_url : '',
+			main_service_url : ''
 		};
 
 	function Plugin( element, options )
@@ -33,10 +34,13 @@
 		{
 			var self = this;
 		
-			// dropdown to change locale
-			$( '#localelist' ).change( function(e)
+			// dropdowns for extension and locale
+			$( '#localelist, #extensionlist' ).change( function(e)
 			{
-				window.location.href = $(this).val();
+				if( $( '#localelist' ).val() !== '---' && $( '#extensionlist' ).val() !== '---' )
+				{
+					window.location.href = self.options.main_service_url + '/' + $( '#extensionlist' ).val() + '/' + $( '#localelist' ).val();
+				}
 			});
 
 			// mark input fields dirty if user changes them
@@ -70,7 +74,7 @@
 				// collect dirty data
 				var data =
 				{
-					locale : $( '#localelist option:selected' ).attr( 'data-locale' ),
+					locale : $( '#localelist option:selected' ).val(),
 					ids    : [],
 					values : []
 				};

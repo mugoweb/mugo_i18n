@@ -150,33 +150,52 @@ function get_i18n_strings( $file )
 
 function build_ts_file( $result, $default_translation = '' )
 {
-	echo "<!DOCTYPE TS><TS>\n";
+	$implementation = new DOMImplementation();
+	$dtd = $implementation->createDocumentType( 'TS' );
+	$doc = $implementation->createDocument( null, 'TS', $dtd);
+	$doc->encoding = 'utf-8';
+	$doc->formatOutput = true;
 	
+	$tsNode = $doc->childNodes->item(1);
+	
+	// build contexts
 	foreach( $result as $context => $entries )
 	{
-		echo "\t<context>\n";
-		echo "\t<name>$context</name>\n";
+		$contextNode = $doc->createElement( 'context' );
+		$nameNode = $doc->createElement( 'name' );
+		$nameNode->appendChild( $doc->createTextNode( $context ) );
+		$contextNode->appendChild( $nameNode );
 
+		// build messages
 		foreach( $entries as $entry )
 		{
-			// Encode the ampersands and less than / greater than since this is XML
-			$source = htmlspecialchars( $entry[ 'source' ], ENT_NOQUOTES );
-			$source = str_replace('&', '&amp;', $source );
-			
-			echo "\t\t<message>\n";
-			
-				if( $entry[ 'file' ] )
-				{
-					echo "\t\t\t<location filename=\"{$entry[ 'file' ]}\" line=\"{$entry[ 'offset' ]}\" />\n";
-				}
-				echo "\t\t\t<source>$source</source>\n";
-				echo "\t\t\t".'<translation type="unfinished">' . htmlentities( $default_translation ) . '</translation>'."\n";
+			$messageNode     = $doc->createElement( 'message' );
+			$sourceNode      = $doc->createElement( 'source' );
+			$translationNode = $doc->createElement( 'translation' );
 
-			echo "\t\t</message>\n";
+			$sourceNode->appendChild( $doc->createTextNode( $entry[ 'source' ] ) );
+			$translationNode->appendChild( $doc->createTextNode( $default_translation ) );
+			$translationNode->setAttribute( 'type', 'unfinished' );
+			
+			if( $entry[ 'file' ] )
+			{
+				$locationNode = $doc->createElement( 'location' );
+				$locationNode->setAttribute( 'filename', $entry[ 'file' ] );
+				$locationNode->setAttribute( 'line', $entry[ 'offset' ] );
+
+				$messageNode->appendChild( $locationNode );
+			}
+
+			$messageNode->appendChild( $sourceNode );
+			$messageNode->appendChild( $translationNode );
+
+			$contextNode->appendChild( $messageNode );
 		}
-		echo "\t</context>\n";
+		
+		$tsNode->appendChild( $contextNode );
 	}
-	echo "</TS>\n";
+
+	echo $doc->saveXML();
 }
 
 /**
