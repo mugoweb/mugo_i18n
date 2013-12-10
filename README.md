@@ -5,15 +5,16 @@ This extension helps you to create language translations for your eZ Publish ext
 
 How to use this extension:
 
-1) In your extension, make sure to use the i18n operator in your templates and the translation method in your PHP files.
+1) In your extension, make sure to use the i18n operator in your templates and the 'ezpI18n::tr' method in your PHP files.
 
-2) In your extension, create a translation folder and subfolders for each translation you would like to create. Here an
+2) In your extension, create a translation folder and subfolders for each translation you would like to create. Here is an
 example strucutre
 
-myextension
-   translations
-      ger-DE
-      fre-FR
+* myextension
+    * translations
+        * ger-DE
+        * fre-FR
+
 
 3) Use following script to extract all translation strings from 'myextension':
 
