@@ -1,0 +1,14 @@
+{
+    "name": "mugoweb/mugo_i18n",
+    "description": "This eZ Publish extension helps you to manage translation.js files.",
+    "type": "ezpublish-legacy-extension",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Philipp Kamps"
+        }
+    ],
+    "require": {
+        "ezsystems/ezpublish-legacy-installer": "*"
+    }
+}
