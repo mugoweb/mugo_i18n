@@ -53,20 +53,39 @@
 				}
 			});
 						
-			// button to hide show finished translations
+			// checkbox to hide show finished translations
 			$( '#hidefinished' ).click( function(e)
 			{
-				if( $(this).attr( 'data-active' ) === '1' )
+				if( $(this).prop('checked') )
 				{
-					$(this).attr( 'data-active', 0 ); 
-					$( self.element ).find( 'li.finished' ).show();
+					$( self.element ).find( 'li.finished' ).fadeOut( 'fast' );
 				}
 				else
 				{
-					$(this).attr( 'data-active', 1 ); 
-					$( self.element ).find( 'li.finished' ).hide();
+					$( self.element ).find( 'li.finished' ).fadeIn( 'fast' );
 				}
 			});
+			
+			// translation context filter
+			$( self.element ).find( 'fieldset.context legend' ).each( function()
+			{
+				$( '#contextlist' ).append(
+						$('<option>', { value: $(this).attr( 'id' ), text : $(this).html()  })
+				);
+			});
+			$( '#contextlist' ).change( function()
+			{
+				if( $(this).val() )
+				{
+					$( self.element ).find( 'fieldset.context' ).hide();
+					$( '#' + $(this).val() ).parent().show();
+				}
+				else
+				{
+					$( self.element ).find( 'fieldset.context' ).show();
+				}
+			});
+			
 			
 			// Save button - probably should do it automatically
 			$( '#save' ).click( function(e)
@@ -74,9 +93,10 @@
 				// collect dirty data
 				var data =
 				{
-					locale : $( '#localelist option:selected' ).val(),
-					ids    : [],
-					values : []
+					locale    : $( '#localelist option:selected' ).val(),
+					extension : $( '#extensionlist option:selected' ).val(),
+					ids       : [],
+					values    : [],
 				};
 
 				$( self.element ).find( 'input[data-dirty = 1]' ).each( function()

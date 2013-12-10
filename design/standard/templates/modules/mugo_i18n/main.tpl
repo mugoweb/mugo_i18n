@@ -13,32 +13,45 @@
 	<h1>Translations</h1>
 
 	<div class="controlbar">
-		{if $extensions}
-			<label>Extension:</label>
-			<select id="extensionlist">
-				<option>---</option>
-				{foreach $extensions as $iExtension}
-					<option value="{$iExtension}" {if eq( $iExtension, $extension )}selected="selected"{/if}>
-						{$iExtension|wash()}
-					</option>
-				{/foreach}
-			</select>
-		{/if}
+		<fieldset>
+			<legend>Select File:</legend>
+			{if $extensions}
+				<label>Extension:</label>
+				<select id="extensionlist">
+					<option>---</option>
+					{foreach $extensions as $iExtension}
+						<option value="{$iExtension}" {if eq( $iExtension, $extension )}selected="selected"{/if}>
+							{$iExtension|wash()}
+						</option>
+					{/foreach}
+				</select>
+			{/if}
 
-		{if $translations|count()}
-			<label>Locale:</label>
-			<select id="localelist">
-				<option>---</option>
-				{foreach $translations as $translation}
-					<option value="{$translation.locale}" {if eq( $locale, $translation.locale )}selected="selected"{/if}>
-						{$translation.name|wash()}
-					</option>
-				{/foreach}
+			{if $translations|count()}
+				<label>Locale:</label>
+				<select id="localelist">
+					<option>---</option>
+					{foreach $translations as $translation}
+						<option value="{$translation.locale}" {if eq( $locale, $translation.locale )}selected="selected"{/if}>
+							{$translation.name|wash()}
+						</option>
+					{/foreach}
+				</select>
+			{/if}
+		</fieldset>
+		
+		<fieldset>
+			<legend>Filter:</legend>
+			Context:
+			<select id="contextlist">
+				<option value="">All</option>
 			</select>
-		{/if}
-
-		<input class="button" data-active="0" id="hidefinished" value="Hide finished" />
-		<input class="button" id="save" value="Save" />
+			Hide finished translations: <input id="hidefinished" type="checkbox" />
+		</fieldset>
+		
+		<div style="text-align: right">
+			<input class="button" id="save" value="Save" />
+		</div>
 	</div>
 		
 	<div class="content">

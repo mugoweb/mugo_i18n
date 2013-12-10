@@ -2,10 +2,21 @@
 
 $module = $Params[ 'Module' ];
 
-if( !empty( $_REQUEST[ 'ids' ] ) && $_REQUEST[ 'locale' ] )
+if( !empty( $_REQUEST[ 'ids' ] ) && $_REQUEST[ 'locale' ] && $_REQUEST[ 'extension' ] )
 {
-	// PEK: security risk here - user a preg_replace to only allow a-z01\-
-	$file = 'extension/mugo_i18n/translations/'. $_REQUEST[ 'locale' ] .'/translation.ts';
+	// Checking given extension value
+	$extension = '';
+	$activeExtensions = \eZExtension::activeExtensions();
+	if( in_array( $_REQUEST[ 'extension' ], $activeExtensions ) )
+	{
+		$extension = $_REQUEST[ 'extension' ];
+	}
+
+	// Checking locale value
+	$locale = $_REQUEST[ 'locale' ];
+	preg_replace( '#[^a-zA-Z\-]#', '', $locale );
+	
+	$file = 'extension/'. $extension .'/translations/'. $locale .'/translation.ts';
 
 	if( file_exists( $file ) )
 	{
@@ -26,8 +37,6 @@ if( !empty( $_REQUEST[ 'ids' ] ) && $_REQUEST[ 'locale' ] )
 				$translationTag = $result->item(0);
 				$translationTag->setAttribute( 'type', 'finished' );
 				$translationTag->nodeValue = $_REQUEST[ 'values' ][ $index ];
-				
-				var_dump( $_REQUEST[ 'values' ][ $index ] );
 			}
 		}
 

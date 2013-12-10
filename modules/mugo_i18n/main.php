@@ -29,11 +29,11 @@ $tpl->setVariable( 'extension', $extension );
 $tpl->setVariable( 'locale', $locale );
 
 $Result = array();
-$Result['content'] = $tpl->fetch( 'design:modules/mugo_i18n/main.tpl' );
-$Result[ 'path' ] = array( array( 'text' => \ezpI18n::tr( 'kernel/user', 'Setup' ),
-								  'url' => false ),
-						   array( 'text' => \ezpI18n::tr( 'kernel/user', 'Mugo i18n' ),
-								  'url' => false ) );
+$Result[ 'content' ] = $tpl->fetch( 'design:modules/mugo_i18n/main.tpl' );
+$Result[ 'path' ]    = array( array( 'text' => \ezpI18n::tr( 'kernel/user', 'Setup' ),
+					                 'url' => false ),
+                              array( 'text' => \ezpI18n::tr( 'kernel/user', 'Mugo i18n' ),
+                                     'url' => false ) );
 
 
 /****
@@ -56,7 +56,7 @@ function get_content( $extension, $locale )
 
 				<xsl:template match="context">
 					<fieldset class="context">
-						<legend><xsl:value-of select="name" /></legend>				
+						<legend id="context-{translate( name, \'/\', \'-\' )}"><xsl:value-of select="name" /></legend>				
 						<ul>
 							<xsl:apply-templates select="message" />
 						</ul>
