@@ -31,9 +31,9 @@ As you can see the script takes the extension name as a parameter. We also redir
 Create a CSV export of a translation file:
 
 To export a translation file as a CSV, build a URL like this
-mugo_i18n/csv/<extension_name>/<locale>
+mugo_i18n/csv/&lt;extension_name&gt;/&lt;locale&gt;
 
-In short, the "csv" module converts a .ts file by looking at the path: <extension_name>/translations/<locale>/translation.ts
+In short, the "csv" module converts a .ts file by looking at the path: &lt;extension_name&gt;/translations/&lt;locale&gt;/translation.ts
 
 So for the base translation export, you would load a URL like this:
 mugo_i18n/csv/mugoqueue/untranslated
