@@ -19,6 +19,13 @@ $ViewList[ 'save' ] = array(
 	'ui_context' => 'administration'
 );
 
+$ViewList[ 'csv' ] = array(
+	'params'     => array( 'extension', 'locale' ),
+	'functions'  => array( 'editor' ),
+	'script'     => 'csv.php',
+	'ui_context' => 'administration'
+);
+
 $FunctionList = array();
 $FunctionList[ 'editor' ] = array();
 

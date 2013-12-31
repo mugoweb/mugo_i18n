@@ -27,4 +27,13 @@ As you can see the script takes the extension name as a parameter. We also redir
 5) In the admin interface, go to "Setup", "Mugo i18n". Select your extension and the target language.
 
 6) Start translating the strings.
- 
+
+Create a CSV export of a translation file:
+
+To export a translation file as a CSV, build a URL like this
+mugo_i18n/csv/<extension_name>/<locale>
+
+In short, the "csv" module converts a .ts file by looking at the path: <extension_name>/translations/<locale>/translation.ts
+
+So for the base translation export, you would load a URL like this:
+mugo_i18n/csv/mugoqueue/untranslated
