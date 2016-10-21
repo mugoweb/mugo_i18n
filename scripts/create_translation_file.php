@@ -18,6 +18,12 @@ $targetOption->mandatory = true;
 $targetOption->shorthelp = "The target extensions, comma separated list";
 $params->registerOption( $targetOption );
 
+//dfearnley: Added 'targetContexts' to limit the output to one or more contexts. Passed using -c as comma separated list.
+$targetContexts = new ezcConsoleOption( 'c', 'context', ezcConsoleInput::TYPE_STRING );
+$targetContexts->mandatory = false;
+$targetContexts->shorthelp = "All contexts are returned by default.  Use this option to limit the output to the provided list.";
+$params->registerOption( $targetContexts );
+
 $default_translation = new ezcConsoleOption( 'd', 'default_translation', ezcConsoleInput::TYPE_STRING );
 $default_translation->mandatory = false;
 $default_translation->shorthelp = "Set a default translation for all strings.";
@@ -44,6 +50,7 @@ catch ( ezcConsoleOptionException $e )
 ####################
 
 $extensions      = explode( ',', $targetOption->value );
+$contexts        = explode( ',', $targetContexts->value );
 $file_extensions = array( '.tpl', '.php' );
 
 // extract strings from files and store them in $results
@@ -74,8 +81,11 @@ foreach( $extensions as $extension )
 			foreach( $i18n_instances as $instance )
 			{
 				if( !translation_exits( $instance[ 'context' ], $instance[ 'source' ] ) )
-				{
-					$result[ $instance[ 'context' ] ][ md5( $instance[ 'source' ] ) ] = $instance;
+				{                    
+                    if( in_array( $instance[ 'context' ], $contexts, false ) || $contexts[ 0 ] == "" )
+                    {
+                        $result[ $instance[ 'context' ] ][ md5( $instance[ 'source' ] ) ] = $instance;                        
+                    }
 				}
 			}
 		}
@@ -130,7 +140,8 @@ function get_i18n_strings( $file )
 	
 	$content = file_get_contents( $file );
 	
-	preg_match_all( '#{[\'|"]([^{]+)[\'|"]\|i18n\([ |]*[\'|"](.*?)[\'|"][ |]*[,|\)]#', $content, $instances, PREG_OFFSET_CAPTURE );
+    //dfearnley: Removed the { from the beginning of the match string to capture instances that are nested within other lines of code
+    preg_match_all( '#[\'|"]([^{]+)[\'|"]\|i18n\([ |]*[\'|"](.*?)[\'|"][ |]*[,|\)]#', $content, $instances, PREG_OFFSET_CAPTURE );
 
 	if( !empty( $instances[ 0 ] ) )
 	{
@@ -218,8 +229,8 @@ class Create_Translation_File_Handler
 	static function list_extension_files( $extension_name, $file_extensions )
 	{
 		$files = array();
-		
-		$dir_handle = @opendir( 'extension/' . $extension_name ) or die( "Unable to open $path" );
+        //this line was causing a $path not defined error, so '$path' changed to 'path'
+		$dir_handle = @opendir( 'extension/' . $extension_name ) or die( "Unable to open path" );
 		
 		$files = self::recursion_list( $dir_handle, 'extension/' . $extension_name, $file_extensions );
 	
