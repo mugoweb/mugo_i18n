@@ -50,7 +50,11 @@ catch ( ezcConsoleOptionException $e )
 ####################
 
 $extensions      = explode( ',', $targetOption->value );
-$contexts        = explode( ',', $targetContexts->value );
+$contexts        = array();
+if( $targetContexts->value )
+{
+	$contexts = explode( ',', $targetContexts->value );
+}
 $file_extensions = array( '.tpl', '.php' );
 
 // extract strings from files and store them in $results
@@ -82,10 +86,10 @@ foreach( $extensions as $extension )
 			{
 				if( !translation_exits( $instance[ 'context' ], $instance[ 'source' ] ) )
 				{                    
-                    if( in_array( $instance[ 'context' ], $contexts, false ) || $contexts[ 0 ] == "" )
-                    {
-                        $result[ $instance[ 'context' ] ][ md5( $instance[ 'source' ] ) ] = $instance;                        
-                    }
+					if( empty( $contexts ) || in_array( $instance[ 'context' ], $contexts, false ) )
+					{
+						$result[ $instance[ 'context' ] ][ md5( $instance[ 'source' ] ) ] = $instance;                        
+					}
 				}
 			}
 		}
@@ -140,8 +144,8 @@ function get_i18n_strings( $file )
 	
 	$content = file_get_contents( $file );
 	
-    //dfearnley: Removed the { from the beginning of the match string to capture instances that are nested within other lines of code
-    preg_match_all( '#[\'|"]([^{]+)[\'|"]\|i18n\([ |]*[\'|"](.*?)[\'|"][ |]*[,|\)]#', $content, $instances, PREG_OFFSET_CAPTURE );
+	//dfearnley: Removed the { from the beginning of the match string to capture instances that are nested within other lines of code
+	preg_match_all( '#[\'|"]([^{]+)[\'|"]\|i18n\([ |]*[\'|"](.*?)[\'|"][ |]*[,|\)]#', $content, $instances, PREG_OFFSET_CAPTURE );
 
 	if( !empty( $instances[ 0 ] ) )
 	{
@@ -229,7 +233,7 @@ class Create_Translation_File_Handler
 	static function list_extension_files( $extension_name, $file_extensions )
 	{
 		$files = array();
-        //this line was causing a $path not defined error, so '$path' changed to 'path'
+		//this line was causing a $path not defined error, so '$path' changed to 'path'
 		$dir_handle = @opendir( 'extension/' . $extension_name ) or die( "Unable to open path" );
 		
 		$files = self::recursion_list( $dir_handle, 'extension/' . $extension_name, $file_extensions );
