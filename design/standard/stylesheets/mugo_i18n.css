@@ -1,39 +1,39 @@
 #mugo_i18n ul
 {
-	margin: 0px;
+    margin: 0px;
 }
 
 #mugo_i18n li
 {
-	margin: 0px;
-	list-style: none;
-	background-color: lightblue;
-	padding: 5px 10px;
-	margin-bottom: 2px;
+    margin: 0px;
+    list-style: none;
+    background-color: lightblue;
+    padding: 5px 10px;
+    margin-bottom: 2px;
 }
 
 #mugo_i18n li.finished
 {
-	background-color: lightgreen;
+    background-color: lightgreen;
 }
 
 #mugo_i18n label
 {
-	font-weight: normal;
-	white-space: normal;
+    font-weight: normal;
+    white-space: normal;
 }
 
 #mugo_i18n .controlbar label
 {
-	display: inline;
+    display: inline;
 }
 
 #mugo_i18n .content
 {
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 #mugo_i18n .content input
 {
-	width: 600px;
+    width: 600px;
 }
