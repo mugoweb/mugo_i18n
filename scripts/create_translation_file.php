@@ -53,7 +53,7 @@ $extensions      = explode( ',', $targetOption->value );
 $contexts        = array();
 if( $targetContexts->value )
 {
-	$contexts = explode( ',', $targetContexts->value );
+    $contexts = explode( ',', $targetContexts->value );
 }
 $file_extensions = array( '.tpl', '.php' );
 
@@ -61,45 +61,45 @@ $file_extensions = array( '.tpl', '.php' );
 $result = array();
 foreach( $extensions as $extension )
 {
-	foreach( $file_extensions as $file_extension )
-	{
-		$files = Create_Translation_File_Handler::list_extension_files( $extension, array( $file_extension ) );
+    foreach( $file_extensions as $file_extension )
+    {
+        $files = Create_Translation_File_Handler::list_extension_files( $extension, array( $file_extension ) );
 
-		foreach( $files as $file )
-		{
-			switch( $file_extension )
-			{
-				case '.tpl':
-				{
-					$i18n_instances = get_i18n_strings( $file );
-				}
-				break;
+        foreach( $files as $file )
+        {
+            switch( $file_extension )
+            {
+                case '.tpl':
+                {
+                    $i18n_instances = get_i18n_strings( $file );
+                }
+                break;
 
-				case '.php':
-				{
-					$i18n_instances = get_i18n_strings_in_php( $file );
-				}
-				break;
-			}
+                case '.php':
+                {
+                    $i18n_instances = get_i18n_strings_in_php( $file );
+                }
+                break;
+            }
 
-			foreach( $i18n_instances as $instance )
-			{
-				if( !translation_exits( $instance[ 'context' ], $instance[ 'source' ] ) )
-				{                    
-					if( empty( $contexts ) || in_array( $instance[ 'context' ], $contexts, false ) )
-					{
-						$result[ $instance[ 'context' ] ][ md5( $instance[ 'source' ] ) ] = $instance;                        
-					}
-				}
-			}
-		}
-	}
+            foreach( $i18n_instances as $instance )
+            {
+                if( !translation_exits( $instance[ 'context' ], $instance[ 'source' ] ) )
+                {                    
+                    if( empty( $contexts ) || in_array( $instance[ 'context' ], $contexts, false ) )
+                    {
+                        $result[ $instance[ 'context' ] ][ md5( $instance[ 'source' ] ) ] = $instance;
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Sort strings per context
 #foreach( $result as &$context )
 #{
-#	sort( $context );
+#    sort( $context );
 #}
 
 build_ts_file( $result, $default_translation->value );
@@ -111,26 +111,26 @@ build_ts_file( $result, $default_translation->value );
 
 function get_i18n_strings_in_php( $file )
 {
-	$return = array();
+    $return = array();
 
-	$content = file_get_contents( $file );
-	
-	preg_match_all( '#(?:ezpI18n::tr|ezi18n)\( *[\'|"](.*?)[\'|"] *, *[\'|"](.*?)[\'|"] *[,|\)]#is', $content, $instances, PREG_OFFSET_CAPTURE );
+    $content = file_get_contents( $file );
+    
+    preg_match_all( '#(?:ezpI18n::tr|ezi18n)\( *[\'|"](.*?)[\'|"] *, *[\'|"](.*?)[\'|"] *[,|\)]#is', $content, $instances, PREG_OFFSET_CAPTURE );
 
-	if( !empty( $instances[ 0 ] ) )
-	{
-		foreach( $instances[ 0 ] as $index => $values )
-		{
-			$return[] = array(
-				'file'    => $file,
-				'offset'  => $values[ 1 ],
-				'source'  => $instances[ 2 ][ $index ][ 0 ],
-				'context' => $instances[ 1 ][ $index ][ 0 ]
-			);
-		}
-	}
-	
-	return $return;
+    if( !empty( $instances[ 0 ] ) )
+    {
+        foreach( $instances[ 0 ] as $index => $values )
+        {
+            $return[] = array(
+                'file'    => $file
+              , 'offset'  => $values[ 1 ]
+              , 'source'  => $instances[ 2 ][ $index ][ 0 ]
+              , 'context' => $instances[ 1 ][ $index ][ 0 ]
+            );
+        }
+    }
+
+    return $return;
 }
 
 /**
@@ -140,77 +140,77 @@ function get_i18n_strings_in_php( $file )
  */
 function get_i18n_strings( $file )
 {
-	$return = array();
-	
-	$content = file_get_contents( $file );
-	
-	//dfearnley: Removed the { from the beginning of the match string to capture instances that are nested within other lines of code
-	preg_match_all( '#[\'|"]([^{]+)[\'|"]\|i18n\([ |]*[\'|"](.*?)[\'|"][ |]*[,|\)]#', $content, $instances, PREG_OFFSET_CAPTURE );
+    $return = array();
+    
+    $content = file_get_contents( $file );
+    
+    //dfearnley: Removed the { from the beginning of the match string to capture instances that are nested within other lines of code
+    preg_match_all( '#[\'|"]([^{]+)[\'|"]\|i18n\([ |]*[\'|"](.*?)[\'|"][ |]*[,|\)]#', $content, $instances, PREG_OFFSET_CAPTURE );
 
-	if( !empty( $instances[ 0 ] ) )
-	{
-		foreach( $instances[ 0 ] as $index => $values )
-		{
-			$return[] = array(
-				'file'    => $file,
-				'offset'  => $values[ 1 ],
-				'source'  => $instances[ 1 ][ $index ][ 0 ],
-				'context' => $instances[ 2 ][ $index ][ 0 ]
-			);
-		}
-	}
+    if( !empty( $instances[ 0 ] ) )
+    {
+        foreach( $instances[ 0 ] as $index => $values )
+        {
+            $return[] = array(
+                'file'    => $file
+              , 'offset'  => $values[ 1 ]
+              , 'source'  => $instances[ 1 ][ $index ][ 0 ]
+              , 'context' => $instances[ 2 ][ $index ][ 0 ]
+            );
+        }
+    }
 
-	return $return;
+    return $return;
 }
 
 function build_ts_file( $result, $default_translation = '' )
 {
-	$implementation = new DOMImplementation();
-	$dtd = $implementation->createDocumentType( 'TS' );
-	$doc = $implementation->createDocument( null, 'TS', $dtd);
-	$doc->encoding = 'utf-8';
-	$doc->formatOutput = true;
-	
-	$tsNode = $doc->childNodes->item(1);
-	
-	// build contexts
-	foreach( $result as $context => $entries )
-	{
-		$contextNode = $doc->createElement( 'context' );
-		$nameNode = $doc->createElement( 'name' );
-		$nameNode->appendChild( $doc->createTextNode( $context ) );
-		$contextNode->appendChild( $nameNode );
+    $implementation = new DOMImplementation();
+    $dtd = $implementation->createDocumentType( 'TS' );
+    $doc = $implementation->createDocument( null, 'TS', $dtd );
+    $doc->encoding = 'utf-8';
+    $doc->formatOutput = true;
+    
+    $tsNode = $doc->childNodes->item( 1 );
+    
+    // build contexts
+    foreach( $result as $context => $entries )
+    {
+        $contextNode = $doc->createElement( 'context' );
+        $nameNode = $doc->createElement( 'name' );
+        $nameNode->appendChild( $doc->createTextNode( $context ) );
+        $contextNode->appendChild( $nameNode );
 
-		// build messages
-		foreach( $entries as $entry )
-		{
-			$messageNode     = $doc->createElement( 'message' );
-			$sourceNode      = $doc->createElement( 'source' );
-			$translationNode = $doc->createElement( 'translation' );
+        // build messages
+        foreach( $entries as $entry )
+        {
+            $messageNode     = $doc->createElement( 'message' );
+            $sourceNode      = $doc->createElement( 'source' );
+            $translationNode = $doc->createElement( 'translation' );
 
-			$sourceNode->appendChild( $doc->createTextNode( $entry[ 'source' ] ) );
-			$translationNode->appendChild( $doc->createTextNode( $default_translation ) );
-			$translationNode->setAttribute( 'type', 'unfinished' );
-			
-			if( $entry[ 'file' ] )
-			{
-				$locationNode = $doc->createElement( 'location' );
-				$locationNode->setAttribute( 'filename', $entry[ 'file' ] );
-				$locationNode->setAttribute( 'line', $entry[ 'offset' ] );
+            $sourceNode->appendChild( $doc->createTextNode( $entry[ 'source' ] ) );
+            $translationNode->appendChild( $doc->createTextNode( $default_translation ) );
+            $translationNode->setAttribute( 'type', 'unfinished' );
+            
+            if( $entry[ 'file' ] )
+            {
+                $locationNode = $doc->createElement( 'location' );
+                $locationNode->setAttribute( 'filename', $entry[ 'file' ] );
+                $locationNode->setAttribute( 'line', $entry[ 'offset' ] );
 
-				$messageNode->appendChild( $locationNode );
-			}
+                $messageNode->appendChild( $locationNode );
+            }
 
-			$messageNode->appendChild( $sourceNode );
-			$messageNode->appendChild( $translationNode );
+            $messageNode->appendChild( $sourceNode );
+            $messageNode->appendChild( $translationNode );
 
-			$contextNode->appendChild( $messageNode );
-		}
-		
-		$tsNode->appendChild( $contextNode );
-	}
+            $contextNode->appendChild( $messageNode );
+        }
 
-	echo $doc->saveXML();
+        $tsNode->appendChild( $contextNode );
+    }
+
+    echo $doc->saveXML();
 }
 
 /**
@@ -221,52 +221,52 @@ function build_ts_file( $result, $default_translation = '' )
  */
 function translation_exits( $context, $source )
 {
-	$man = eZTranslatorManager::instance();
-	$trans = $man->translate( $context, $source );
+    $man = eZTranslatorManager::instance();
+    $trans = $man->translate( $context, $source );
 
-	return $trans !== null;
+    return $trans !== null;
 }
 
 class Create_Translation_File_Handler
 {
 
-	static function list_extension_files( $extension_name, $file_extensions )
-	{
-		$files = array();
-		//this line was causing a $path not defined error, so '$path' changed to 'path'
-		$dir_handle = @opendir( 'extension/' . $extension_name ) or die( "Unable to open path" );
-		
-		$files = self::recursion_list( $dir_handle, 'extension/' . $extension_name, $file_extensions );
-	
-		closedir( $dir_handle );
-		
-		return $files;
-	}
+    static function list_extension_files( $extension_name, $file_extensions )
+    {
+        $files = array();
+        //this line was causing a $path not defined error, so '$path' changed to 'path'
+        $dir_handle = @opendir( 'extension/' . $extension_name ) or die( "Unable to open path" );
 
-	static function recursion_list( $dir_handle, $path, $file_extensions )
-	{
-		$return = array();
-		//running the while loop
-		while (false !== ( $file = readdir($dir_handle) ) )
-		{
-			$dir = $path.'/'.$file;
-	
-			if( is_dir( $dir ) && $file != '.' && $file !='..' && $file != '.svn' )
-			{
-				$handle = @opendir($dir) or die("undable to open file $file");
-				//echo "D: $file\n";
-				
-				$return = array_merge( self::recursion_list( $handle, $dir, $file_extensions), $return );
-			}
-			elseif( in_array( substr( $file, -4 ), $file_extensions ) )
-			{
-				//TODO: still takes ini files
-				//echo "F: $file\n";
-				$return[] = $dir;
-			}
-		}
-		
-		return $return;
-	}
+        $files = self::recursion_list( $dir_handle, 'extension/' . $extension_name, $file_extensions );
+
+        closedir( $dir_handle );
+
+        return $files;
+    }
+
+    static function recursion_list( $dir_handle, $path, $file_extensions )
+    {
+        $return = array();
+        //running the while loop
+        while( false !== ( $file = readdir( $dir_handle ) ) )
+        {
+            $dir = $path.'/'.$file;
+
+            if( is_dir( $dir ) && $file != '.' && $file !='..' && $file != '.svn' )
+            {
+                $handle = @opendir($dir) or die( "undable to open file $file" );
+                //echo "D: $file\n";
+
+                $return = array_merge( self::recursion_list( $handle, $dir, $file_extensions), $return );
+            }
+            elseif( in_array( substr( $file, -4 ), $file_extensions ) )
+            {
+                //TODO: still takes ini files
+                //echo "F: $file\n";
+                $return[] = $dir;
+            }
+        }
+
+        return $return;
+    }
 }
 ?>
