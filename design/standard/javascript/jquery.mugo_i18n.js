@@ -92,10 +92,11 @@
                 // collect dirty data
                 var data =
                 {
-                    locale    : $( '#localelist option:selected' ).val()
-                  , extension : $( '#extensionlist option:selected' ).val()
-                  , ids       : []
-                  , values    : []
+                    locale        : $( '#localelist option:selected' ).val()
+                  , extension     : $( '#extensionlist option:selected' ).val()
+                  , ids           : []
+                  , values        : []
+                  , ezxform_token : $( '#ezxform_token_js' ).attr( 'title' )
                 };
 
                 $( self.element ).find( 'input[data-dirty = 1]' ).each( function()
